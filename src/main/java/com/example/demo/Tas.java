@@ -28,4 +28,14 @@ public class Tas {
     private String jenis;
     private int harga;
     private int stock;
+    
+    public String getNama() {
+        return nama;
+    }
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+    public Tas(String n){
+        nama = n;
+    }
 }

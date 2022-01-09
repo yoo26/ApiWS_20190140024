@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,5 +57,21 @@ public class DatabaseController {
     public ResponseEntity<HttpStatus> deleteTasById(@PathVariable String id){
         tas.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+    @GetMapping("/tas/nama")
+    public ResponseEntity<List<Tas>> getTasByNama(@RequestParam(required=false) String nama) {
+        try{
+            List<Tas> t = new ArrayList<Tas>();
+            tas.findByNamaContaining(nama).forEach(t::add);
+            
+            if (t.isEmpty()){
+                tas.findAll().forEach(t::add);
+            }
+            
+            return new ResponseEntity<>(t, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
